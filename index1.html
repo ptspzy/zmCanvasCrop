@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" name="form">
+        <input type="file" name="uploadImg">
+    </form>
+    <img class="img" width="200">
+    <script>
+    var upload = document.form.uploadImg,
+        img = document.querySelector(".img");
+    upload.onchange = function(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+            img.src = reader.result;
+        }
+        reader.readAsDataURL(file);
+        var fd = new FormData();
+        fd.append('img_data', file);
+        fd.append('img_subfix', "png");
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.withCredentials = true;
+        xmlhttp.open('POST', 'Upload.php');
+        xmlhttp.send(fd);
+        xmlhttp.onreadstatechange = function() {
+            if (xmlhttp.readySate == 4 && xmlhttp.status == 200) {
+                document.write(xmlhttp.responseText);
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>
